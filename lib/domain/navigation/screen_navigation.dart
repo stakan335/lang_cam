@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:lang_cam/statics/routes.dart';
 
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +16,9 @@ class ScreenNavigation {
       case LibraryRoutes.camScreen:
         Navigator.of(context).push(
           MaterialPageRoute<Widget>(
-            builder: (BuildContext context) => CamScreen(),
+            builder: (BuildContext context) => CamScreen(
+              cameras: bundle['cameras'],
+            ),
           ),
         );
         break;

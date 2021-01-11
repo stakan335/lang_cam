@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:lang_cam/domain/navigation/screen_navigation.dart';
 import 'package:lang_cam/statics/routes.dart';
+import 'package:camera/camera.dart';
 
-void main() {
+List<CameraDescription> cameras;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
   runApp(MyApp());
 }
 
@@ -57,6 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ScreenNavigation.routeTo(
             route: LibraryRoutes.camScreen,
             context: context,
+            bundle: <String, dynamic>{
+              'cameras': cameras,
+            },
           );
         },
         tooltip: 'Increment',
