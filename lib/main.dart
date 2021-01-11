@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:lang_cam/domain/navigation/screen_navigation.dart';
+import 'package:lang_cam/statics/routes.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -29,14 +32,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,14 +46,19 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              '',
               style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          ScreenNavigation.routeTo(
+            route: LibraryRoutes.camScreen,
+            context: context,
+          );
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
