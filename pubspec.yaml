@@ -32,8 +32,15 @@ dev_dependencies:
   image_picker: ^0.6.7+21
   path: ^1.7.0
   path_provider: ^1.6.27
+  tflite: ^1.1.1
+  meta: ^1.2.4
 
 flutter:
   uses-material-design: true
+  assets:
+      - assets/cats_dogs.tflite
+      - assets/labels.txt
+      - assets/cats_dogs1.tflite
+      - assets/labels1.txt
 
 

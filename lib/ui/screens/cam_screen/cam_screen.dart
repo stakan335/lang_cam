@@ -1,13 +1,12 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import 'package:lang_cam/statics/statics.dart';
+import 'package:lang_cam/domain/navigation/screen_navigation.dart';
+import 'package:lang_cam/statics/routes.dart';
 
 import 'package:camera/camera.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CamScreen extends StatefulWidget {
   const CamScreen({
@@ -22,7 +21,6 @@ class CamScreen extends StatefulWidget {
 class _CamScreenState extends State<CamScreen> {
   @override
   CameraController controller;
-  // Future<void> _initializeControllerFuture;
   XFile imageFile;
 
   @override
@@ -36,7 +34,6 @@ class _CamScreenState extends State<CamScreen> {
       }
       setState(() {});
     });
-    // _initializeControllerFuture = controller.initialize();
   }
 
   @override
@@ -53,36 +50,43 @@ class _CamScreenState extends State<CamScreen> {
     return Scaffold(
       backgroundColor: LibraryColors.mainBackgroundScreen,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.camera_alt),
+        child: Icon(Icons.camera),
         onPressed: () async {
           controller.takePicture().then((XFile file) {
             if (mounted) {
-              setState(() {
-                imageFile = file;
-              });
+              ScreenNavigation.routeTo(
+                route: LibraryRoutes.predictionScreen,
+                context: context,
+                bundle: <String, dynamic>{
+                  'imageFile': file,
+                },
+              );
             }
           });
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        child: Container(
+          height: 30.0,
+          color: Colors.black,
+        ),
+      ),
       body: Column(
         children: <Widget>[
+          Expanded(
+            child: Container(
+              color: Colors.black,
+            ),
+          ),
           AspectRatio(
             aspectRatio: controller.value.aspectRatio,
-            child: imageFile != null
-                ? Container(
-                    child: Image.file(File(imageFile.path)),
-                  )
-                : CameraPreview(controller),
+            child: CameraPreview(controller),
           ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                setState(() {});
-              },
-              child: Container(
-                color: Colors.black,
-              ),
-            ),
+          Container(
+            color: Colors.black,
+            height: 30,
           ),
         ],
       ),

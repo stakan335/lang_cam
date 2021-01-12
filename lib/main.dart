@@ -17,12 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Cam recognizer',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.yellow,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Cam recognizer'),
     );
   }
 }
@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -48,7 +49,14 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
+              'Для включения камеры нажмите на желтую кнопку',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                fontFamily: 'Times',
+              ),
+              textAlign: TextAlign.center,
             ),
             Text(
               '',
@@ -68,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
           );
         },
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: Icon(Icons.camera_alt_rounded),
       ),
     );
   }

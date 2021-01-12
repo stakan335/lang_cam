@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:lang_cam/ui/screens/cam_screen/cam_screen.dart';
+import 'package:lang_cam/ui/screens/prediction_screen/prediction_screen.dart';
 
 class ScreenNavigation {
   static void routeTo({
@@ -22,9 +23,19 @@ class ScreenNavigation {
           ),
         );
         break;
+      case LibraryRoutes.predictionScreen:
+        Navigator.of(context).push(
+          MaterialPageRoute<Widget>(
+            builder: (BuildContext context) => PredictionScreen(
+              imageFile: bundle['imageFile'],
+            ),
+          ),
+        );
+        break;
       case LibraryRoutes.pop:
         Navigator.of(context).pop();
         break;
+
       default:
     }
   }
