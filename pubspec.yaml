@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -38,9 +38,5 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-      - assets/cats_dogs.tflite
-      - assets/labels.txt
-      - assets/cats_dogs1.tflite
-      - assets/labels1.txt
-
-
+    - assets/mobilenet_v1_1.0_224.tflite
+    - assets/labels_mobilenet_quant_v1_224.txt

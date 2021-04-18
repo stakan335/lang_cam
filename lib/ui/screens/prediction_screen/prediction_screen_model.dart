@@ -1,24 +1,39 @@
-import 'dart:io';
+import 'dart:async';
+import 'package:flutter/services.dart';
 import 'package:tflite/tflite.dart';
 
 class PredictionScreenModel {
-  loadMyModel() async {
-    var model = await Tflite.loadModel(
-      model: "assets/cats_dogs.tflite",
-      labels: "assets/labels.txt",
+  Future<List<dynamic>> ssdMobileNet(String path) async {
+    int startTime = new DateTime.now().millisecondsSinceEpoch;
+    var recognitions = await Tflite.runModelOnImage(
+      path: path,
+      numResults: 6,
+      threshold: 0.05,
+      imageMean: 127.5,
+      imageStd: 127.5,
     );
-    print(model);
-    return model;
+
+    int endTime = new DateTime.now().millisecondsSinceEpoch;
+    print("Inference took ${endTime - startTime}ms");
+
+    return recognitions;
   }
 
-  predictObjectOnPicture(String path) async {
-    var result = await Tflite.runModelOnImage(
-      path: path,
-      numResults: 2,
-      threshold: 0.5,
-      imageMean: 255,
-      imageStd: 255,
-    );
-    return result;
+  Future loadModel() async {
+    Tflite.close();
+    try {
+      String res;
+
+      res = await Tflite.loadModel(
+        model: "assets/mobilenet_v1_1.0_224.tflite",
+        labels: "assets/labels_mobilenet_quant_v1_224.txt",
+        // isAsset: true,
+        // useGpuDelegate: true,
+      );
+
+      // print(res);
+    } on PlatformException {
+      print('Failed to load model.');
+    }
   }
 }
