@@ -259,8 +259,8 @@ Newfoundland
 Great Pyrenees
 Samoyed
 Pomeranian
-chow
-keeshond
+food
+dog keeshond
 Brabancon griffon
 Pembroke
 Cardigan
@@ -947,7 +947,7 @@ artichoke
 bell pepper
 cardoon
 mushroom
-Granny Smith
+apple
 strawberry
 orange
 lemon
