@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "545643113497",
+    "project_id": "lang-cam",
+    "storage_bucket": "lang-cam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545643113497:android:9d126d2b28c10cca374e88",
+        "android_client_info": {
+          "package_name": "com.lang_cam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "545643113497-l51l5c2j3u6gd01qt7kpv5chj5eomeic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfyVgwzAr_vRVFnhk9QblZnWJ_pcV2Xo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "545643113497-l51l5c2j3u6gd01qt7kpv5chj5eomeic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

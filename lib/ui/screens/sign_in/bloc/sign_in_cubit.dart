@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lang_cam/arch/di/di_manager.dart';
+import 'package:lang_cam/arch/services/auth_service.dart';
 
 import 'package:lang_cam/ui/screens/sign_in/bloc/sign_in_states.dart';
 
@@ -16,7 +18,15 @@ class SignInCubit extends Cubit<SignInState> {
     String email,
     String password,
   }) async {
-    print(email);
-    print(password);
+    AuthService authService = DiManager.getIt<AuthService>();
+
+    bool isCompleted =
+        await authService.signIn(email: email, password: password);
+
+    if (isCompleted) {
+      emit(SignInState.complited());
+    } else {
+      emit(SignInState.failure());
+    }
   }
 }

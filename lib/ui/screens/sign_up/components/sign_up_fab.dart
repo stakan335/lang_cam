@@ -20,12 +20,6 @@ class SignUpFab extends StatelessWidget {
                 password: BlocProvider.of<SignUpCubit>(context)
                     .passwordController
                     .text,
-                firstName: BlocProvider.of<SignUpCubit>(context)
-                    .firstNameController
-                    .text,
-                secondName: BlocProvider.of<SignUpCubit>(context)
-                    .lastNameController
-                    .text,
               );
             },
             width: double.infinity,

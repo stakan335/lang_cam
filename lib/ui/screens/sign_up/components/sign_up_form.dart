@@ -14,20 +14,6 @@ class SignUpForm extends StatelessWidget {
         child: Column(
           children: [
             TextFormInput(
-              label: 'Name',
-              showLabel: true,
-              textEditingController:
-                  BlocProvider.of<SignUpCubit>(context).firstNameController,
-            ),
-            const SizedBox(height: 20),
-            TextFormInput(
-              label: 'Second name',
-              showLabel: true,
-              textEditingController:
-                  BlocProvider.of<SignUpCubit>(context).lastNameController,
-            ),
-            const SizedBox(height: 20),
-            TextFormInput(
               label: 'Email',
               showLabel: true,
               textEditingController:
