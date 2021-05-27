@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:lang_cam/arch/di/buisness_logic_di.dart';
 import 'package:lang_cam/arch/di/di_manager.dart';
 import 'package:lang_cam/arch/services/auth_service.dart';
@@ -10,7 +8,7 @@ class AuthServiceDI implements BusinessLogicDi {
   @override
   void dispose() {
     DiManager.getIt.resetLazySingleton(
-      instance: DiManager.getIt<User>(),
+      instance: DiManager.getIt<AuthService>(),
     );
   }
 

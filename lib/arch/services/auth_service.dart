@@ -6,6 +6,7 @@ class AuthService {
   final FirebaseAuth _firebaseAuth;
 
   Stream<User> get onAuthStateChanged => _firebaseAuth.authStateChanges();
+  User get currentUser => _firebaseAuth.currentUser;
 
   Future<bool> signIn({String email, String password}) async {
     try {

@@ -11,11 +11,11 @@ class Header extends StatelessWidget {
     return Container(
       color: LibraryColors.mainYellow,
       width: double.infinity,
-      height: 70,
+      height: 50,
       child: SafeArea(
         child: Center(
           child: Text(
-            text,
+            text ?? '',
             style: LibraryStyles.mainText(),
           ),
         ),

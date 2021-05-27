@@ -5,8 +5,10 @@ import 'package:lang_cam/statics/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lang_cam/ui/screens/auth_screen/auth_screen.dart';
+import 'package:lang_cam/ui/screens/auth_screen/bloc/auth_cubit.dart';
 
 import 'package:lang_cam/ui/screens/cam_screen/cam_screen.dart';
+import 'package:lang_cam/ui/screens/home_screen/home_screen.dart';
 import 'package:lang_cam/ui/screens/prediction_screen/prediction_screen.dart';
 import 'package:lang_cam/ui/screens/sign_in/bloc/sign_in_cubit.dart';
 import 'package:lang_cam/ui/screens/sign_in/sign_in.dart';
@@ -41,7 +43,10 @@ class ScreenNavigation {
       case LibraryRoutes.auth:
         Navigator.of(context).push(
           MaterialPageRoute<Widget>(
-            builder: (BuildContext context) => AuthScreen(),
+            builder: (BuildContext context) => BlocProvider<AuthCubit>(
+              create: (_) => AuthCubit(),
+              child: AuthScreen(),
+            ),
           ),
         );
         break;
@@ -62,6 +67,13 @@ class ScreenNavigation {
               create: (_) => SignInCubit(),
               child: SignIn(),
             ),
+          ),
+        );
+        break;
+      case LibraryRoutes.home:
+        Navigator.of(context).push(
+          MaterialPageRoute<Widget>(
+            builder: (BuildContext context) => HomeScreen(),
           ),
         );
         break;

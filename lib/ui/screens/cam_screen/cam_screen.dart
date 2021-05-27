@@ -65,7 +65,7 @@ class _CamScreenState extends State<CamScreen> {
           });
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(
@@ -73,22 +73,18 @@ class _CamScreenState extends State<CamScreen> {
           color: Colors.black,
         ),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Container(
-              color: Colors.black,
-            ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              CameraPreview(controller),
+              Container(
+                color: Colors.black,
+                height: 30,
+              ),
+            ],
           ),
-          AspectRatio(
-            aspectRatio: controller.value.aspectRatio,
-            child: CameraPreview(controller),
-          ),
-          Container(
-            color: Colors.black,
-            height: 30,
-          ),
-        ],
+        ),
       ),
     );
   }

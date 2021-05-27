@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lang_cam/arch/di/di_manager.dart';
 import 'package:lang_cam/arch/services/auth_service.dart';
 import 'package:lang_cam/ui/screens/auth_screen/bloc/auth_state.dart';
 
@@ -13,7 +14,11 @@ class AuthCubit extends Cubit<AuthState> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  Future<void> checkAuth() async {
+  Future<void> logOut() async {
+    FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> checkAuthListener() async {
     AuthService authService = AuthService(FirebaseAuth.instance);
     authService.onAuthStateChanged.listen((user) {
       if (user == null) {
