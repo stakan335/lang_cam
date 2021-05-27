@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lang_cam/arch/di/di_manager.dart';
 import 'package:lang_cam/arch/services/auth_service.dart';
 import 'package:lang_cam/ui/screens/auth_screen/bloc/auth_state.dart';
 

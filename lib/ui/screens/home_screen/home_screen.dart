@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lang_cam/arch/di/di_manager.dart';
 import 'package:lang_cam/statics/statics.dart';
 import 'package:lang_cam/ui/screens/cam_screen/cam_screen.dart';
 import 'package:lang_cam/ui/screens/cards_screen/cards_screen.dart';
 import 'package:lang_cam/ui/screens/settings_screen/settings_screen.dart';
+import 'package:lang_cam/ui/screens/settings_screen/bloc/settings_cubit.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:camera/camera.dart';
 
@@ -71,7 +73,10 @@ class _HomeScreenState extends State<HomeScreen> {
       CamScreen(
         cameras: DiManager.getIt<List<CameraDescription>>(),
       ),
-      SettingsScreen(),
+      BlocProvider(
+        create: (context) => SettingsCubit(),
+        child: SettingsScreen(),
+      ),
     ];
   }
 

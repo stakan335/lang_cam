@@ -12,7 +12,6 @@ import 'package:camera/camera.dart';
 import 'package:lang_cam/domain/navigation/screen_navigation.dart';
 import 'package:lang_cam/statics/routes.dart';
 import 'package:lang_cam/statics/statics.dart';
-import 'package:lang_cam/ui/screens/auth_screen/auth_screen.dart';
 import 'package:lang_cam/ui/screens/auth_screen/bloc/auth_cubit.dart';
 import 'package:lang_cam/ui/screens/auth_screen/bloc/auth_state.dart';
 

@@ -5,10 +5,29 @@ import 'package:lang_cam/statics/google_langs.dart';
 import 'package:lang_cam/statics/statics.dart';
 import 'package:lang_cam/statics/style.dart';
 
-class LanguagePicker extends StatelessWidget {
-  const LanguagePicker({this.onSelectedItemChanged});
+class LanguagePicker extends StatefulWidget {
+  const LanguagePicker({this.onSelectedItemChanged, this.initialValue});
 
   final Function(int) onSelectedItemChanged;
+  final int initialValue;
+
+  @override
+  _LanguagePickerState createState() => _LanguagePickerState();
+}
+
+class _LanguagePickerState extends State<LanguagePicker> {
+  FixedExtentScrollController controller;
+  @override
+  void initState() {
+    controller = FixedExtentScrollController(initialItem: widget.initialValue);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +36,10 @@ class LanguagePicker extends StatelessWidget {
         Container(
           height: 300,
           child: CupertinoPicker(
+            scrollController: controller,
             itemExtent: 40,
             useMagnifier: true,
-            onSelectedItemChanged: onSelectedItemChanged,
+            onSelectedItemChanged: widget.onSelectedItemChanged,
             children: buildLangs(),
           ),
         ),

@@ -9,9 +9,7 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: LibraryColors.mainYellow,
       width: double.infinity,
-      height: 50,
       child: SafeArea(
         child: Center(
           child: Text(

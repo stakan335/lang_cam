@@ -77,6 +77,7 @@ class ScreenNavigation {
           ),
         );
         break;
+
       case LibraryRoutes.pop:
         Navigator.of(context).pop();
         break;
