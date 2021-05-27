@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lang_cam/arch/di/di_manager.dart';
 import 'package:lang_cam/arch/services/auth_service.dart';
@@ -24,9 +26,20 @@ class SignUpCubit extends Cubit<SignUpState> {
         await authService.signUp(email: email, password: password);
 
     if (isCompleted) {
+      writeProfileData({
+        'nativeLang': 'ru',
+        'studyLang': 'en',
+      });
       emit(SignUpState.complited());
     } else {
       emit(SignUpState.failure());
     }
+  }
+
+  Future<void> writeProfileData(Map<String, dynamic> profileData) async {
+    User user = FirebaseAuth.instance.currentUser;
+    String token = user.uid;
+    var ref = FirebaseFirestore.instance.doc('profile/$token');
+    ref.set(profileData);
   }
 }
