@@ -9,6 +9,7 @@ import 'package:lang_cam/ui/screens/auth_screen/bloc/auth_cubit.dart';
 
 import 'package:lang_cam/ui/screens/cam_screen/cam_screen.dart';
 import 'package:lang_cam/ui/screens/home_screen/home_screen.dart';
+import 'package:lang_cam/ui/screens/prediction_screen/bloc/pridiction_bloc.dart';
 import 'package:lang_cam/ui/screens/prediction_screen/prediction_screen.dart';
 import 'package:lang_cam/ui/screens/sign_in/bloc/sign_in_cubit.dart';
 import 'package:lang_cam/ui/screens/sign_in/sign_in.dart';
@@ -34,8 +35,12 @@ class ScreenNavigation {
       case LibraryRoutes.predictionScreen:
         Navigator.of(context).push(
           MaterialPageRoute<Widget>(
-            builder: (BuildContext context) => PredictionScreen(
-              imageFile: bundle['imageFile'],
+            builder: (BuildContext context) => BlocProvider<PredictionCubit>(
+              create: (_) =>
+                  PredictionCubit()..onScreenOpened(bundle['imageFile']),
+              child: PredictionScreen(
+                imageFile: bundle['imageFile'],
+              ),
             ),
           ),
         );

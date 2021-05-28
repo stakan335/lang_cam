@@ -1,6 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lang_cam/statics/colors.dart';
+import 'package:lang_cam/ui/screens/prediction_screen/bloc/prediction_state.dart';
+import 'package:lang_cam/ui/screens/prediction_screen/bloc/pridiction_bloc.dart';
 
 import 'package:lang_cam/ui/screens/prediction_screen/prediction_screen_model.dart';
 
@@ -17,69 +21,66 @@ class PredictionScreen extends StatefulWidget {
 class _PredictionScreenState extends State<PredictionScreen> {
   XFile get pictureForPredction => widget.imageFile;
   PredictionScreenModel viewModel = PredictionScreenModel();
-  var model;
-  var result;
-
-  List<dynamic> _recognitions;
-  List<String> _translations;
-  bool _busy = false;
 
   @override
   void initState() {
     super.initState();
-    _busy = true;
-
-    viewModel.loadModel().then((val) {
-      setState(() {
-        _busy = false;
-      });
-    });
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      executeOnStart();
-    });
   }
 
-  Future<void> executeOnStart() async {
-    List<dynamic> recognationResult =
-        await viewModel.ssdMobileNet(pictureForPredction.path);
-
-    List<String> translations =
-        await viewModel.translateResults(recognationResult);
-    setState(() {
-      _recognitions = recognationResult;
-      _translations = translations;
-    });
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: <Widget>[
-              if (pictureForPredction != null)
-                Container(
-                  child: Image.file(File(pictureForPredction.path)),
+    return BlocBuilder<PredictionCubit, PredictionState>(
+      builder: (_, state) {
+        if (state.status == PredictionStatus.dataLoaded) {
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: SafeArea(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: <Widget>[
+                    if (pictureForPredction != null)
+                      Container(
+                        child: Image.file(File(pictureForPredction.path)),
+                      ),
+                    if (state.recognations != null &&
+                        state.translations != null)
+                      Column(
+                        children: buildRecognationResults(
+                            state.recognations,
+                            state.recognationsTranslations,
+                            state.translations,
+                            state.studyLang),
+                      ),
+                    const SizedBox(height: 40),
+                  ],
                 ),
-              if (_recognitions != null && _translations != null)
-                Column(
-                  children:
-                      buildRecognationResults(_recognitions, _translations),
-                ),
-              const SizedBox(height: 40),
-            ],
+              ),
+            ),
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(
+            backgroundColor: LibraryColors.mainBackgroundScreen,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              LibraryColors.mainYellow,
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
   List<Widget> buildRecognationResults(
     List<dynamic> recognations,
+    List<String> recognationsTranslations,
     List<String> translations,
+    String studyLang,
   ) {
     List<Widget> results = [];
 
@@ -90,7 +91,8 @@ class _PredictionScreenState extends State<PredictionScreen> {
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
               onTap: () {
-                viewModel.textToSpeech(recognations[index]["label"]);
+                viewModel.textToSpeech(
+                    recognationsTranslations[index], studyLang);
               },
               child: Ink(
                 height: 69,
@@ -109,7 +111,7 @@ class _PredictionScreenState extends State<PredictionScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${recognations[index]["label"]} (${(recognations[index]["confidence"] * 100).toStringAsFixed(0)}%) -",
+                            "${recognationsTranslations[index]} (${(recognations[index]["confidence"] * 100).toStringAsFixed(0)}%) -",
                             textAlign: TextAlign.start,
                             style: TextStyle(
                               fontSize: index == 0 ? 20 : 14,
