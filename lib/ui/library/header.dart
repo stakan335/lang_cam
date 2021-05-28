@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lang_cam/statics/statics.dart';
 import 'package:lang_cam/statics/style.dart';
 
 class Header extends StatelessWidget {

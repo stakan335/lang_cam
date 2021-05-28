@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lang_cam/statics/colors.dart';
+import 'package:lang_cam/ui/library/primary_button.dart';
 import 'package:lang_cam/ui/screens/prediction_screen/bloc/prediction_state.dart';
 import 'package:lang_cam/ui/screens/prediction_screen/bloc/pridiction_bloc.dart';
 
@@ -58,6 +59,12 @@ class _PredictionScreenState extends State<PredictionScreen> {
                             state.studyLang),
                       ),
                     const SizedBox(height: 40),
+                    PrimaryButton(
+                        text: 'Save',
+                        onPressed: () {
+                          BlocProvider.of<PredictionCubit>(context)
+                              .save(pictureForPredction);
+                        })
                   ],
                 ),
               ),

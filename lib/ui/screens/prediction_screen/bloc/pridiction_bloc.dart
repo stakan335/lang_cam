@@ -1,15 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:lang_cam/ui/screens/prediction_screen/bloc/prediction_state.dart';
 import 'dart:async';
-
+import 'dart:io';
 import 'package:flutter/services.dart';
 
+import 'package:lang_cam/ui/screens/prediction_screen/bloc/prediction_state.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tflite/tflite.dart';
 import 'package:translator/translator.dart';
 import 'package:camera/camera.dart';
 
 import 'package:bloc/bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class PredictionCubit extends Cubit<PredictionState> {
   PredictionCubit() : super(const PredictionState.defaultState());
@@ -122,5 +125,27 @@ class PredictionCubit extends Cubit<PredictionState> {
     }
 
     return translations;
+  }
+
+  //save logic
+  Future<void> save(XFile imageFile) async {
+    User user = FirebaseAuth.instance.currentUser;
+    String token = user.uid;
+
+    Reference storageReference =
+        FirebaseStorage.instance.ref().child('$token/${imageFile.name}');
+
+    Uuid uuid = Uuid();
+    String id = uuid.v1();
+
+    var ref = FirebaseFirestore.instance.doc('profile/$token/cards/$id');
+    ref.set({
+      'imagePath': '$token/${imageFile.name}',
+      'recognitions': currentRecognations,
+    });
+
+    File file = File(imageFile.path);
+    UploadTask uploadTask = storageReference.putFile(file);
+    await uploadTask.whenComplete(() => print('File Uploaded'));
   }
 }
