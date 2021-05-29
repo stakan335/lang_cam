@@ -7,6 +7,7 @@ import 'package:lang_cam/ui/screens/cam_screen/cam_screen.dart';
 import 'package:lang_cam/ui/screens/cards_screen/cards_screen.dart';
 import 'package:lang_cam/ui/screens/settings_screen/settings_screen.dart';
 import 'package:lang_cam/ui/screens/settings_screen/bloc/settings_cubit.dart';
+import 'package:lang_cam/ui/screens/cards_screen/bloc/cards_cubit.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:camera/camera.dart';
 
@@ -17,10 +18,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   PersistentTabController _controller;
+  CardsCubit cardsCubit;
 
   @override
   void initState() {
     _controller = PersistentTabController();
+    cardsCubit = CardsCubit()..onScreenOpened();
     super.initState();
   }
 
@@ -69,7 +72,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _buildScreens() {
     return [
-      CardsScreen(),
+      BlocProvider(
+        create: (context) => cardsCubit,
+        child: CardsScreen(),
+      ),
       CamScreen(
         cameras: DiManager.getIt<List<CameraDescription>>(),
       ),
