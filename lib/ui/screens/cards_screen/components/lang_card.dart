@@ -4,13 +4,29 @@ import 'package:lang_cam/statics/statics.dart';
 import 'package:lang_cam/statics/style.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
-class LangCard extends StatelessWidget {
-  const LangCard({this.imageUrl, this.text, this.translation, this.lang});
+class LangCardWidgetData {
+  const LangCardWidgetData({
+    this.id,
+    this.imageUrl,
+    this.text,
+    this.translation,
+    this.lang,
+  });
+
+  final String id;
 
   final String imageUrl;
   final String text;
   final String translation;
   final String lang;
+}
+
+class LangCard extends StatelessWidget {
+  const LangCard({
+    this.data,
+  });
+
+  final LangCardWidgetData data;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +44,7 @@ class LangCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.horizontal(left: Radius.circular(20)),
               child: Image.network(
-                imageUrl,
+                data.imageUrl,
                 height: MediaQuery.of(context).size.height / 5,
                 filterQuality: FilterQuality.high,
               ),
@@ -43,7 +59,7 @@ class LangCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        text,
+                        data.text,
                         style: LibraryStyles.mainText(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -51,7 +67,7 @@ class LangCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        translation,
+                        data.translation,
                         style: LibraryStyles.mainText(
                             fontSize: 19,
                             fontWeight: FontWeight.w400,
@@ -61,7 +77,7 @@ class LangCard extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      textToSpeech(text, lang);
+                      textToSpeech(data.text, data.lang);
                     },
                     splashColor: LibraryColors.secondYellow.withOpacity(0.3),
                     highlightColor:

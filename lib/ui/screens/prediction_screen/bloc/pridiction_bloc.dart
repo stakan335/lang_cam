@@ -138,14 +138,16 @@ class PredictionCubit extends Cubit<PredictionState> {
     Uuid uuid = Uuid();
     String id = uuid.v1();
 
-    var ref = FirebaseFirestore.instance.doc('profile/$token/cards/$id');
-    ref.set({
-      'imagePath': '$token/${imageFile.name}',
-      'recognitions': currentRecognations,
-    });
-
     File file = File(imageFile.path);
     UploadTask uploadTask = storageReference.putFile(file);
     await uploadTask.whenComplete(() => print('File Uploaded'));
+
+    String downloadUrl = await storageReference.getDownloadURL();
+
+    var ref = FirebaseFirestore.instance.doc('profile/$token/cards/$id');
+    ref.set({
+      'imagePath': downloadUrl,
+      'recognitions': currentRecognations,
+    });
   }
 }
