@@ -62,14 +62,8 @@ class PredictionCubit extends Cubit<PredictionState> {
 
     List<String> recognationsTraslations;
 
-    if (currentStudyLang != 'en') {
-      recognationsTraslations = await translateResults(
-          input: currentRecognations, lang: currentStudyLang);
-    } else {
-      currentRecognations.forEach((recognation) {
-        recognationsTraslations = recognation['label'];
-      });
-    }
+    recognationsTraslations = await translateResults(
+        input: currentRecognations, lang: currentStudyLang);
 
     emit(PredictionState.dataLoaded(
         recognations: currentRecognations,
@@ -148,6 +142,7 @@ class PredictionCubit extends Cubit<PredictionState> {
     ref.set({
       'imagePath': downloadUrl,
       'recognitions': currentRecognations,
+      'id': id,
     });
   }
 }

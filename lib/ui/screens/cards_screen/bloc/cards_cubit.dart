@@ -13,6 +13,7 @@ class CardsCubit extends Cubit<CardsState> {
   String currentNativeLang;
   List<LangCardData> currentLangCardsDataList;
   List<LangCardWidgetData> langCardWidgetDataList = [];
+  List<LangCardWidgetData> langChangedCardWidgetDataList = [];
 
   Future<void> onScreenOpened() async {
     try {
@@ -49,8 +50,16 @@ class CardsCubit extends Cubit<CardsState> {
 
   Future<void> setLangListener(DocumentReference setSnapshot) async {
     setSnapshot.snapshots().listen((event) async {
+      emit(CardsState.loading());
       currentNativeLang = event['nativeLang'];
       currentStudyLang = event['studyLang'];
+      langCardWidgetDataList = await translateAll();
+
+      emit(CardsState.dataLoaded(
+        nativeLang: currentNativeLang,
+        studyLang: currentStudyLang,
+        langCardsDataList: langCardWidgetDataList,
+      ));
     });
   }
 
@@ -59,6 +68,14 @@ class CardsCubit extends Cubit<CardsState> {
     cardsCollection.snapshots().listen((event) async {
       emit(CardsState.loading());
       await emitCards(event);
+
+      langCardWidgetDataList = await translateAll();
+
+      emit(CardsState.dataLoaded(
+        nativeLang: currentNativeLang,
+        studyLang: currentStudyLang,
+        langCardsDataList: langCardWidgetDataList,
+      ));
     });
   }
 
@@ -70,30 +87,27 @@ class CardsCubit extends Cubit<CardsState> {
     currentLangCardsDataList =
         cards.map((card) => LangCardData.fromJson(card)).toList();
     langCardWidgetDataList = [];
-    await translateAll();
-
-    emit(CardsState.dataLoaded(
-      nativeLang: currentNativeLang,
-      studyLang: currentStudyLang,
-      langCardsDataList: langCardWidgetDataList,
-    ));
   }
 
-  Future<void> translateAll() async {
+  Future<List<LangCardWidgetData>> translateAll() async {
     int cardsCount = currentLangCardsDataList.length;
 
+    List<LangCardWidgetData> langCardWidgetDataListLocal = [];
+
     for (int i = 0; i < cardsCount; i++) {
-      langCardWidgetDataList.add(LangCardWidgetData(
-        imageUrl: currentLangCardsDataList[i].imageUrl,
-        text: await translateResults(
-            input: currentLangCardsDataList[i].recognitions[0].label,
-            to: currentStudyLang),
-        translation: await translateResults(
-            input: currentLangCardsDataList[i].recognitions[0].label,
-            to: currentNativeLang),
-        lang: currentStudyLang,
-      ));
+      langCardWidgetDataListLocal.add(LangCardWidgetData(
+          imageUrl: currentLangCardsDataList[i].imageUrl,
+          text: await translateResults(
+              input: currentLangCardsDataList[i].recognitions[0].label,
+              to: currentStudyLang),
+          translation: await translateResults(
+              input: currentLangCardsDataList[i].recognitions[0].label,
+              to: currentNativeLang),
+          lang: currentStudyLang,
+          id: currentLangCardsDataList[i].id));
     }
+
+    return langCardWidgetDataListLocal;
   }
 
   Future<String> translateResults({
@@ -106,5 +120,20 @@ class CardsCubit extends Cubit<CardsState> {
         await translator.translate(input, from: 'en', to: to);
 
     return translationResult.text;
+  }
+
+  Future<void> deleteCard(String id) async {
+    User user = FirebaseAuth.instance.currentUser;
+    String token = user.uid;
+
+    FirebaseFirestore.instance
+        .collection('profile')
+        .doc(token)
+        .collection('cards')
+        .doc(id)
+        .delete()
+        .then((value) {
+      print("Success!");
+    });
   }
 }
